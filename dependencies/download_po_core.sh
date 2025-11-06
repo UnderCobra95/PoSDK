@@ -304,8 +304,22 @@ download_po_core() {
     # Extract package
     print_info "Extracting po_core package..."
     print_info "正在解压po_core压缩包..."
+    
+    # Ensure we're in the right directory and clean up any existing extraction | 确保在正确的目录并清理任何现有解压
+    cd "$deps_dir"
+    
+    # Remove existing po_core_lib directory if it exists (to ensure clean extraction) | 如果存在则删除现有po_core_lib目录（确保干净解压）
+    if [[ -d "po_core_lib" ]]; then
+        print_info "Removing existing po_core_lib directory for clean extraction..."
+        print_info "删除现有po_core_lib目录以便干净解压..."
+        rm -rf "po_core_lib"
+    fi
+    
+    # Use absolute path for package file | 使用绝对路径
+    local abs_package_path="$(cd "$(dirname "$package_file")" && pwd)/$(basename "$package_file")"
+    
     # 过滤 macOS 特定的 tar 警告信息
-    tar -xzf "$package_file" 2>&1 | grep -v "Ignoring unknown extended header keyword" | grep -v "忽略未知的扩展头" || {
+    tar -xzf "$abs_package_path" 2>&1 | grep -v "Ignoring unknown extended header keyword" | grep -v "忽略未知的扩展头" || {
         # 只有在非警告错误时才退出
         if [ ${PIPESTATUS[0]} -ne 0 ]; then
             print_error "Failed to extract po_core package"

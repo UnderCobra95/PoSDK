@@ -79,7 +79,9 @@ download_test_data() {
 
             # Use local package | 使用本地压缩包
             mkdir -p "$temp_dir"
-            cp "$local_package_path" "$temp_dir/$package_file"
+            # Use absolute path for copying | 使用绝对路径进行复制
+            local abs_local_path="$(cd "$(dirname "$local_package_path")" && pwd)/$(basename "$local_package_path")"
+            cp "$abs_local_path" "$temp_dir/$package_file"
             cd "$temp_dir"
         else
             print_info "Proceeding with download..."
@@ -170,12 +172,21 @@ download_test_data() {
     # Extract package | 解压包
     print_info "Extracting test data package..."
     print_info "解压测试数据包..."
+    
+    # Ensure we're in temp directory | 确保在临时目录
+    cd "$temp_dir"
+    
+    # Use absolute path for package file | 使用绝对路径
+    local abs_package_path="$(cd "$(dirname "$package_file")" && pwd)/$(basename "$package_file")"
+    
     # 过滤 macOS 特定的 tar 警告信息
-    tar -xzf "$package_file" 2>&1 | grep -v "Ignoring unknown extended header keyword" | grep -v "忽略未知的扩展头" || {
+    tar -xzf "$abs_package_path" 2>&1 | grep -v "Ignoring unknown extended header keyword" | grep -v "忽略未知的扩展头" || {
         # 只有在非警告错误时才退出
         if [ ${PIPESTATUS[0]} -ne 0 ]; then
             print_error "Failed to extract test data package"
             print_error "解压测试数据包失败"
+            cd "$SCRIPT_DIR"
+            rm -rf "$temp_dir"
             exit 1
         fi
     }
@@ -185,22 +196,46 @@ download_test_data() {
         print_info "Installing test data to: ${SCRIPT_DIR}"
         print_info "将测试数据安装到：${SCRIPT_DIR}"
 
-        # Move all test data directories | 移动所有测试数据目录
+        # Move all test data directories, overwriting existing ones | 移动所有测试数据目录，覆盖现有的
+        set +e  # Temporarily disable exit on error for loop processing | 临时禁用错误退出以便循环处理
+        
         for item in posdk_test_staging/*; do
-            if [[ -e "$item" ]]; then
-                local basename=$(basename "$item")
-                print_info "Installing ${basename}..."
-                mv "$item" "${SCRIPT_DIR}/"
+            # Check if glob matched anything | 检查glob是否匹配到任何内容
+            if [[ ! -e "$item" ]]; then
+                continue
             fi
+            
+            local basename=$(basename "$item")
+            local target_path="${SCRIPT_DIR}/${basename}"
+            
+            print_info "Installing ${basename}..."
+            
+            # Remove existing directory/file if it exists to ensure clean installation | 如果存在则删除现有目录/文件以确保干净安装
+            if [[ -e "$target_path" ]]; then
+                print_info "  Removing existing ${basename} for update..."
+                print_info "  删除现有${basename}以便更新..."
+                rm -rf "$target_path"
+            fi
+            
+            # Move the item to target location | 移动项目到目标位置
+            mv "$item" "$target_path" || {
+                print_error "Failed to move ${basename} to ${target_path}"
+                print_error "移动${basename}到${target_path}失败"
+                # Continue with next item instead of exiting | 继续处理下一个项目而不是退出
+            }
         done
+        
+        set -e  # Re-enable exit on error | 重新启用错误退出
 
-        rmdir posdk_test_staging
+        rmdir posdk_test_staging 2>/dev/null || true
 
         print_success "Test data extracted successfully"
         print_success "测试数据解压成功"
     else
         print_error "Unexpected package structure"
         print_error "意外的包结构"
+        cd "$SCRIPT_DIR"
+        rm -rf "$temp_dir"
         exit 1
     fi
 
