@@ -12,16 +12,11 @@
 
 get_property(_plugins_initialized GLOBAL PROPERTY POSDK_PLUGINS_INITIALIZED)
 if(NOT _plugins_initialized)
-    set_property(GLOBAL PROPERTY POSDK_PLUGINS_SUCCESS "")      # 成功构建的插件列表
-    set_property(GLOBAL PROPERTY POSDK_PLUGINS_FAILED "")       # 构建失败的插件列表
-    set_property(GLOBAL PROPERTY POSDK_PLUGINS_SKIPPED "")      # 跳过的插件列表
-    set_property(GLOBAL PROPERTY POSDK_PLUGINS_TOTAL 0)         # 总插件数
-    set_property(GLOBAL PROPERTY POSDK_PLUGINS_INITIALIZED TRUE)  # 标记已初始化
-    
-    message(STATUS "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    message(STATUS "Plugin Status Tracking System Initialized")
-    message(STATUS "插件状态跟踪系统已初始化")
-    message(STATUS "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    set_property(GLOBAL PROPERTY POSDK_PLUGINS_SUCCESS "")
+    set_property(GLOBAL PROPERTY POSDK_PLUGINS_FAILED "")
+    set_property(GLOBAL PROPERTY POSDK_PLUGINS_SKIPPED "")
+    set_property(GLOBAL PROPERTY POSDK_PLUGINS_TOTAL 0)
+    set_property(GLOBAL PROPERTY POSDK_PLUGINS_INITIALIZED TRUE)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -37,8 +32,6 @@ macro(_record_plugin_success PLUGIN_NAME)
         set(success_list "${PLUGIN_NAME}")
     endif()
     set_property(GLOBAL PROPERTY POSDK_PLUGINS_SUCCESS "${success_list}")
-    # Debug message
-    message(STATUS "  [Tracking] Recorded success: ${PLUGIN_NAME}")
 endmacro()
 
 # Record plugin failure | 记录插件失败
@@ -50,7 +43,6 @@ macro(_record_plugin_failure PLUGIN_NAME REASON)
         set(failed_list "${PLUGIN_NAME}:${REASON}")
     endif()
     set_property(GLOBAL PROPERTY POSDK_PLUGINS_FAILED "${failed_list}")
-    message(STATUS "  [Tracking] Recorded failure: ${PLUGIN_NAME}")
 endmacro()
 
 # Record plugin skipped | 记录插件跳过
@@ -62,7 +54,6 @@ macro(_record_plugin_skipped PLUGIN_NAME REASON)
         set(skipped_list "${PLUGIN_NAME}:${REASON}")
     endif()
     set_property(GLOBAL PROPERTY POSDK_PLUGINS_SKIPPED "${skipped_list}")
-    message(STATUS "  [Tracking] Recorded skipped: ${PLUGIN_NAME}")
 endmacro()
 
 # Increment total plugin count | 增加总插件数
@@ -70,8 +61,6 @@ macro(_increment_plugin_count)
     get_property(total GLOBAL PROPERTY POSDK_PLUGINS_TOTAL)
     math(EXPR total "${total} + 1")
     set_property(GLOBAL PROPERTY POSDK_PLUGINS_TOTAL ${total})
-    # Debug message
-    message(STATUS "  [Tracking] Total plugins: ${total}")
 endmacro()
 
 # ------------------------------------------------------------------------------
@@ -140,21 +129,16 @@ function(add_posdk_plugin PLUGIN_NAME)
         set(PLUGIN_PLUGIN_TYPE "methods")
     endif()
     
-    # Auto-discover source and header files if not specified | 如果未指定，自动发现源文件和头文件
+    # Auto-discover source and header files if not specified
     if(NOT PLUGIN_SOURCES)
         file(GLOB PLUGIN_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
         if(NOT PLUGIN_SOURCES)
             message(WARNING "No .cpp files found in ${CMAKE_CURRENT_SOURCE_DIR} for plugin ${PLUGIN_NAME}")
-        else()
-            message(STATUS "  Auto-discovered ${PLUGIN_NAME} sources: ${PLUGIN_SOURCES}")
         endif()
     endif()
     
     if(NOT PLUGIN_HEADERS)
         file(GLOB PLUGIN_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
-        if(PLUGIN_HEADERS)
-            message(STATUS "  Auto-discovered ${PLUGIN_NAME} headers: ${PLUGIN_HEADERS}")
-        endif()
     endif()
     
     # Create plugin library
@@ -166,9 +150,8 @@ function(add_posdk_plugin PLUGIN_NAME)
     # 这允许即使此插件失败，构建也能继续
     if(PLUGIN_OPTIONAL)
         set_target_properties(${PLUGIN_NAME} PROPERTIES
-            EXCLUDE_FROM_ALL FALSE  # Still build by default, but errors won't stop the build
+            EXCLUDE_FROM_ALL FALSE
         )
-        message(STATUS "  → Plugin ${PLUGIN_NAME} marked as OPTIONAL")
     endif()
     
     # ========================================
@@ -261,9 +244,6 @@ function(add_posdk_plugin PLUGIN_NAME)
         # Windows默认就会检查未定义符号
     endif()
     
-    message(STATUS "  [Security] Plugin ${PLUGIN_NAME}: Forced symbol binding enabled")
-    message(STATUS "  [安全] 插件 ${PLUGIN_NAME}: 已启用强制符号绑定")
-    
     # Set compile options
     target_compile_options(${PLUGIN_NAME} 
         PRIVATE ${POMVG_COMPILE_OPTIONS}
@@ -300,10 +280,8 @@ function(add_posdk_plugin PLUGIN_NAME)
         RUNTIME DESTINATION plugins/${PLUGIN_PLUGIN_TYPE}    # Windows .dll
     )
     
-    # Record successful plugin addition | 记录插件成功添加
+    # Record successful plugin addition
     _record_plugin_success("${PLUGIN_NAME}")
-    
-    message(STATUS "✓ Added PoSDK plugin: ${PLUGIN_NAME} (type: ${PLUGIN_PLUGIN_TYPE})")
 endfunction()
 
 # ------------------------------------------------------------------------------
@@ -369,8 +347,6 @@ function(_handle_plugin_configs PLUGIN_NAME PLUGIN_TYPE PLUGIN_FOLDER)
         install(FILES ${PLUGIN_CONFIG_FILES}
             DESTINATION configs/methods
         )
-        
-        message(STATUS "  Copied ${PLUGIN_NAME} config files to: ${METHOD_CONFIG_DIR}")
     endif()
 endfunction()
 
@@ -413,8 +389,6 @@ function(_handle_plugin_python_files PLUGIN_NAME PLUGIN_TYPE PLUGIN_FOLDER)
         install(FILES ${PLUGIN_PYTHON_FILES}
             DESTINATION plugins/methods  # Backward compatibility
         )
-        
-        message(STATUS "  Copied ${PLUGIN_NAME} Python files to: ${PLUGIN_PYTHON_DIR}")
     endif()
 endfunction()
 
@@ -428,8 +402,6 @@ function(auto_discover_plugin_directories PLUGIN_TYPE BASE_DIR)
     foreach(CMAKE_FILE ${PLUGIN_DIRS})
         get_filename_component(PLUGIN_DIR ${CMAKE_FILE} DIRECTORY)
         get_filename_component(PLUGIN_NAME ${PLUGIN_DIR} NAME)
-        
-        message(STATUS "Discovered plugin directory: ${PLUGIN_NAME} at ${PLUGIN_DIR}")
         
         # Try to add subdirectory with error handling
         # 尝试添加子目录并处理错误
