@@ -18,6 +18,19 @@ The following utility functions are member functions of the `MethodPreset` class
   IndexT max_iterations = GetOptionAsIndexT("max_iterations", 100);
   ```
 
+### GetOptionAsInt
+- Function: Get signed integer value (int) from method configuration.
+- Calling Method: `this->GetOptionAsInt(key, default_value)` or `GetOptionAsInt(key, default_value)`.
+- Parameters:
+  - `key`: const MethodParams& - Parameter key name.
+  - `default_value`: int - Default value returned when key does not exist or conversion fails, defaults to 0.
+- Return Value: Parameter value of int type.
+- Usage Example:
+  ```cpp
+  // int step_size = this->GetOptionAsInt("step_size", -1);
+  int step_size = GetOptionAsInt("step_size", -1);
+  ```
+
 ### GetOptionAsFloat
 - Function: Get float value from method configuration.
 - Calling Method: `this->GetOptionAsFloat(key, default_value)` or `GetOptionAsFloat(key, default_value)`.
@@ -29,6 +42,19 @@ The following utility functions are member functions of the `MethodPreset` class
   ```cpp
   // float threshold = this->GetOptionAsFloat("threshold", 0.5f);
   float threshold = GetOptionAsFloat("threshold", 0.5f);
+  ```
+
+### GetOptionAsDouble
+- Function: Get double precision floating point value from method configuration.
+- Calling Method: `this->GetOptionAsDouble(key, default_value)` or `GetOptionAsDouble(key, default_value)`.
+- Parameters:
+  - `key`: const MethodParams& - Parameter key name.
+  - `default_value`: double - Default value returned when key does not exist or conversion fails, defaults to 0.0.
+- Return Value: Parameter value of double type.
+- Usage Example:
+  ```cpp
+  // double precision_value = this->GetOptionAsDouble("precision", 1e-6);
+  double precision_value = GetOptionAsDouble("precision", 1e-6);
   ```
 
 ### GetOptionAsBool
@@ -56,6 +82,32 @@ The following utility functions are member functions of the `MethodPreset` class
   ```cpp
   // std::string mode = this->GetOptionAsString("algorithm_mode", "default");
   std::string mode = GetOptionAsString("algorithm_mode", "default");
+  ```
+
+### GetOptionAsPath
+- Function: Get path value from method configuration with placeholder support. Supports `{exe_dir}`, `{root_dir}`, and generic `{key_name}` placeholders.
+- Calling Method: `this->GetOptionAsPath(key, root_dir, default_value)` or `GetOptionAsPath(key, root_dir, default_value)`.
+- Parameters:
+  - `key`: const MethodParams& - Parameter key name.
+  - `root_dir`: const std::string& - Root directory path for `{root_dir}` placeholder replacement. If empty, gets from `method_options_`. Defaults to empty string.
+  - `default_value`: const std::string& - Default value returned when key does not exist, defaults to empty string.
+- Return Value: Parameter value of std::string type with placeholders replaced.
+- Supported Placeholders:
+  - `{root_dir}`: Root directory path. Prioritizes the `root_dir` parameter, otherwise gets from `method_options_`.
+  - `{exe_dir}`: Executable file directory.
+  - `{key_name}`: Reference other key values in `method_options_` (note: referenced keys need to exist first).
+- Usage Example:
+  ```cpp
+  // Get path with placeholders
+  std::string output_path = GetOptionAsPath("output_dir", "/project/root");
+  // If config contains: "output_dir = {root_dir}/results/{dataset_name}"
+  // And method_options_ contains: "dataset_name = test_data"
+  // Result: "/project/root/results/test_data"
+  
+  // Get path with exe_dir placeholder
+  std::string config_path = GetOptionAsPath("config_file");
+  // If config contains: "config_file = {exe_dir}/../configs/settings.ini"
+  // Result: "/path/to/executable/../configs/settings.ini"
   ```
 
 ## Data Type Conversion and Access

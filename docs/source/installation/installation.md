@@ -15,13 +15,7 @@ This document describes PoSDK installation requirements and procedures.
 
 ## One-Click Installation
 
-PoSDK provides an automated installation script that can install all required system dependencies and plugin dependencies with one command:
-
-```bash
-cd /path/to/PoSDK/
-chmod +x install.sh
-./install.sh
-```
+PoSDK provides an automated installation script that can install all required system dependencies and plugin dependencies with one command. See [Quick Start](#quick-start) for detailed installation steps.
 
 The installation script automatically completes the following steps:
 1. Update system package list
@@ -180,6 +174,7 @@ You can quickly launch the PoSDK Global SfM pipeline by following these steps:
 
 ### Prerequisites
 
+See [System Requirements](#system-requirements) for detailed requirements. Minimum requirements:
 - CMake 3.28+ (required for some dependency libraries)
 - C++17 compatible compiler
 - Git
@@ -205,22 +200,7 @@ cd PoSDK
 
 For normal installation: Press Enter (default values) to complete the installation, no additional selection needed.
 
-```
-
-```{note}
-**Installation Prompts:**
-
-During installation, you'll see multiple `[Y/n]` or `[y/N]` prompts to detect existing installations and ask whether to skip redundant installations.
-
-
-**Prompt Format:**
-- `[Y/n]` - Default is **Y** (skip), just press Enter
-- `[y/N]` - Default is **N** (continue), just press Enter
-
-**Normal recommendation: Press Enter all the way to use default values**
-
-
-For detailed explanation of each installation step, see [](#installation-flow-explained).
+For detailed explanation of each installation step and prompt, see [](#installation-flow-explained).
 ```
 
 ```{note}
@@ -348,7 +328,6 @@ After successful installation and run, you should see:
   - `storage/features/` - Feature extraction results
   - `storage/matches/` - Feature matching results
   - `storage/poses/` - Pose estimation results
-  - `storage/logs/` - Detailed log files
 - **Evaluation Reports**: Accuracy evaluation and comparative analysis results
 
 ### Troubleshooting
@@ -463,7 +442,7 @@ brew upgrade cmake
 
 ### System Requirements Check
 
-If encountering installation issues, first check:
+If encountering installation issues, first verify the [System Requirements](#system-requirements) are met:
 
 - **CMake Version**: Ensure CMake version is 3.28 or higher
   ```bash

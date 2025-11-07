@@ -71,7 +71,7 @@ cd docs && ./install_docs.sh
 ## Quick Start
 
 ### Prerequisites
-- CMake 3.15+
+- CMake 3.28+
 - C++17 compatible compiler
 - Git
 
@@ -170,6 +170,12 @@ PoSDK is built on peer-reviewed research in pose-only imaging geometry:
   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
   volume={45}, number={1}, pages={73--86}, year={2023},
   doi={10.1109/TPAMI.2021.3139681}
+}
+
+@article{cai2024linear,
+  title={Linear Relative Pose Estimation Founded on Pose-only Imaging Geometry},
+  journal={arXiv preprint arXiv:2401.13357},
+  year={2024}
 }
 ```
 ## Supported Platforms 

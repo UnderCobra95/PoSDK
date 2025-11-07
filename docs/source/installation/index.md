@@ -18,7 +18,6 @@ cd PoSDK
 ```
 
 For all prompts during installation, press Enter to use default values.
-
 ```
 
 ---
@@ -35,14 +34,6 @@ Complete PoSDK installation workflow documentation, including:
 - Detailed installation prompt explanations
 - Troubleshooting and common issues
 
-**Complete PoSDK installation guide:**
-- System requirements and dependency checks
-- One-click installation script usage
-- Manual installation steps
-- Dependency installation order and skip strategies
-- Detailed installation prompt explanations
-- Troubleshooting and FAQ
-
 ### 2. [Using Precompiled Libraries](using_precompiled.md)
 
 How to use precompiled po_core core library in your project:
@@ -51,23 +42,12 @@ How to use precompiled po_core core library in your project:
 - Basic usage examples
 - Runtime library lookup troubleshooting
 
-**How to use precompiled po_core libraries:**
-- Core library structure
-- CMake integration methods
-- Basic usage examples
-- Runtime library troubleshooting
-
 ### 3. [Build Environment and Version Information](po_core_build_environment.md)
 
 po_core core library build environment configuration and dependency version requirements:
 - Supported build platforms (Ubuntu 24.04/18.04, macOS)
 - Build tool version requirements (GCC, Clang, CMake)
 - Dependency library version information (Boost, Ceres, OpenCV, etc.)
-
-**po_core build environment and dependency versions:**
-- Supported platforms
-- Build tool requirements
-- Dependency version information
 
 ---
 

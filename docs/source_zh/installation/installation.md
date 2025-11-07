@@ -15,13 +15,7 @@
 
 ## 一键安装
 
-PoSDK 提供了自动安装脚本，可以一键安装所有必需的系统依赖和插件依赖：
-
-```bash
-cd /path/to/PoSDK/
-chmod +x install.sh
-./install.sh
-```
+PoSDK 提供了自动安装脚本，可以一键安装所有必需的系统依赖和插件依赖。详细安装步骤请参见 [快速开始](#quick-start)。
 
 安装脚本会自动完成以下步骤：
 1. 更新系统包列表
@@ -181,8 +175,9 @@ You can quickly launch the PoSDK Global SfM pipeline by following these steps:
 
 ### Prerequisites
 
+详细要求请参见 [系统要求](#系统要求)。最低要求：
 - CMake 3.28+（某些依赖库需要3.28+版本）
-- C++17 compatible compiler
+- 支持 C++17 标准的编译器
 - Git
 
 ### Step 1: Clone Repository and Install
@@ -207,22 +202,8 @@ cd PoSDK
 对于正常安装：直接按回车键（默认值）即可完成安装，无需额外选择。
 
 For normal installation: Press Enter (default values) to complete the installation.
-```
 
-```{note}
-**Installation Prompts | 安装提示说明:**
-
-安装过程中会出现多个 `[Y/n]` 或 `[y/N]` 提示，用于检测已有安装并询问是否跳过重复安装。
-During installation, you'll see multiple `[Y/n]` or `[y/N]` prompts to detect existing installations and ask whether to skip redundant installations.
-
-**提示格式说明 | Prompt Format:**
-- `[Y/n]` - 默认为 **Y** (跳过)，直接按回车即可
-- `[y/N]` - 默认为 **N** (继续)，直接按回车即可
-
-**正常情况建议：一路按回车键使用默认值**
-**Normal recommendation: Press Enter all the way to use default values**
-
-For detailed explanation of each installation step, see [](#installation-flow-explained).
+For detailed explanation of each installation step and prompt, see [](#installation-flow-explained).
 ```
 
 ```{note}
@@ -350,7 +331,6 @@ After successful installation and run, you should see:
   - `storage/features/` - Feature extraction results
   - `storage/matches/` - Feature matching results
   - `storage/poses/` - Pose estimation results
-  - `storage/logs/` - Detailed log files
 - **Evaluation Reports**: Accuracy evaluation and comparative analysis results
 
 ### 故障排除
@@ -465,7 +445,7 @@ brew upgrade cmake
 
 ### 系统要求检查
 
-如果遇到安装问题，请先检查：
+如果遇到安装问题，请先验证是否满足 [系统要求](#系统要求)：
 
 - **CMake版本**：确保CMake版本为3.28或更高
   ```bash

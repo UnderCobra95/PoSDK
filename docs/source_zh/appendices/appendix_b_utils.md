@@ -18,6 +18,19 @@
   IndexT max_iterations = GetOptionAsIndexT("max_iterations", 100);
   ```
 
+### GetOptionAsInt
+- 功能: 从方法配置获取有符号整数值(int)。
+- 调用方式: `this->GetOptionAsInt(key, default_value)` 或 `GetOptionAsInt(key, default_value)`。
+- 参数:
+  - `key`: const MethodParams& - 参数键名。
+  - `default_value`: int - 默认值，当键不存在或转换失败时返回，默认为0。
+- 返回值: int类型的参数值。
+- 使用示例:
+  ```cpp
+  // int step_size = this->GetOptionAsInt("step_size", -1);
+  int step_size = GetOptionAsInt("step_size", -1);
+  ```
+
 ### GetOptionAsFloat
 - 功能: 从方法配置获取浮点数值。
 - 调用方式: `this->GetOptionAsFloat(key, default_value)` 或 `GetOptionAsFloat(key, default_value)`。
@@ -29,6 +42,19 @@
   ```cpp
   // float threshold = this->GetOptionAsFloat("threshold", 0.5f);
   float threshold = GetOptionAsFloat("threshold", 0.5f);
+  ```
+
+### GetOptionAsDouble
+- 功能: 从方法配置获取双精度浮点数值。
+- 调用方式: `this->GetOptionAsDouble(key, default_value)` 或 `GetOptionAsDouble(key, default_value)`。
+- 参数:
+  - `key`: const MethodParams& - 参数键名。
+  - `default_value`: double - 默认值，当键不存在或转换失败时返回，默认为0.0。
+- 返回值: double类型的参数值。
+- 使用示例:
+  ```cpp
+  // double precision_value = this->GetOptionAsDouble("precision", 1e-6);
+  double precision_value = GetOptionAsDouble("precision", 1e-6);
   ```
 
 ### GetOptionAsBool
@@ -58,7 +84,33 @@
   std::string mode = GetOptionAsString("algorithm_mode", "default");
   ```
 
-##  数据类型转换与获取
+### GetOptionAsPath
+- 功能: 从方法配置获取路径值，支持占位符替换。支持 `{exe_dir}`、`{root_dir}` 和通用 `{key_name}` 占位符。
+- 调用方式: `this->GetOptionAsPath(key, root_dir, default_value)` 或 `GetOptionAsPath(key, root_dir, default_value)`。
+- 参数:
+  - `key`: const MethodParams& - 参数键名。
+  - `root_dir`: const std::string& - 根目录路径，用于 `{root_dir}` 占位符替换。如果为空，则从 `method_options_` 中获取。默认为空字符串。
+  - `default_value`: const std::string& - 默认值，当键不存在时返回，默认为空字符串。
+- 返回值: std::string类型的参数值，占位符已被替换。
+- 支持的占位符:
+  - `{root_dir}`: 根目录路径。优先使用 `root_dir` 参数，否则从 `method_options_` 中获取。
+  - `{exe_dir}`: 可执行文件所在目录。
+  - `{key_name}`: 引用 `method_options_` 中其他键值（注意：被引用的键值需要先存在）。
+- 使用示例:
+  ```cpp
+  // 获取带占位符的路径
+  std::string output_path = GetOptionAsPath("output_dir", "/project/root");
+  // 如果配置包含: "output_dir = {root_dir}/results/{dataset_name}"
+  // 且 method_options_ 包含: "dataset_name = test_data"
+  // 结果: "/project/root/results/test_data"
+  
+  // 获取带 exe_dir 占位符的路径
+  std::string config_path = GetOptionAsPath("config_file");
+  // 如果配置包含: "config_file = {exe_dir}/../configs/settings.ini"
+  // 结果: "/path/to/executable/../configs/settings.ini"
+  ```
+
+## 数据类型转换与获取
 
 ### GetDataPtr<T>函数
 - 功能: 安全地获取并转换数据指针到指定类型。该函数能够智能处理普通的 `DataPtr` 和封装多个数据项的 `DataPackage`。
@@ -97,11 +149,7 @@
   }
   ```
 
-### String2IndexT (已废弃)
-- **注意**: 此函数已从 `types.hpp` 中移除，相关功能由 `MethodPreset::GetOptionAsIndexT()` 替代。
-
-### String2Float (已废弃)
-- **注意**: 此函数已从 `types.hpp` 中移除，相关功能由 `MethodPreset::GetOptionAsFloat()` 替代。
+## 字符串转换工具函数
 
 ### String2Float
 - 功能: 将字符串转换为float类型
@@ -129,4 +177,8 @@
   bool disabled = String2Bool("off", true);    // 返回false
   bool invalid = String2Bool("maybe", false);  // 返回默认值false
   ```
+
+### 已废弃的函数
+
+- **String2IndexT (已废弃)**: 此函数已从 `types.hpp` 中移除，相关功能由 `MethodPreset::GetOptionAsIndexT()` 替代。
 

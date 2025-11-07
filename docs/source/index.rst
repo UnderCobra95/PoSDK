@@ -50,6 +50,12 @@ If your research benefits from the Pose-only theory or PoSDK, please cite the fo
      publisher={IEEE},
      doi={10.1109/TPAMI.2021.3139681}
    }
+
+   @article{cai2024linear,
+     title={Linear Relative Pose Estimation Founded on Pose-only Imaging Geometry},
+     journal={arXiv preprint arXiv:2401.13357},
+     year={2024}
+   }
    
 
 

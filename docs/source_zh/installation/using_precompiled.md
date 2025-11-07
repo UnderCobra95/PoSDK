@@ -78,7 +78,7 @@ po_core_lib 提供以下核心库文件：
 
 集成模式会将 po_core_lib 的所有内容复制到项目的输出目录，使应用程序可以独立运行。（见根目录 [`CMakeLists.txt:789`](../../CMakeLists.txt#L789)）
 
-### 方式2：普通模式
+### 方式2：非集成模式
 
 非集成模式直接从原始位置使用 po_core_lib，适合开发环境。
 
@@ -263,7 +263,7 @@ export LD_LIBRARY_PATH=/path/to/po_core_lib/lib:$LD_LIBRARY_PATH
 
    **解决方法**：
    - **集成模式**：确保构建目录下 `output/lib/` 包含所有库文件
-   - **普通模式**：设置正确的动态库搜索路径（LD_LIBRARY_PATH等）
+   - **非集成模式**：设置正确的动态库搜索路径（LD_LIBRARY_PATH等）
    - 使用 `ldd`(Linux) / `otool -L`(macOS) / `Dependency Walker`(Windows) 检查依赖
 
 3. **符号未定义错误**
